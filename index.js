@@ -31,23 +31,55 @@ async function run() {
     // await client.connect();
     const JobCollection = client.db("jobWorldDB").collection("addjob");
 
-    //add job data get
+    //my job data get
     app.get("/addjob", async (req, res) => {
       const cursor = JobCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
 
-    //add job data post
+    //my job data id gat
+
+    app.get("/addjob/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await JobCollection.findOne(query);
+      res.send(result);
+    });
+
+    //my job data post
     app.post("/addjob", async (req, res) => {
       const newaddJob = req.body;
-
       console.log(newaddJob);
       const result = await JobCollection.insertOne(newaddJob);
       res.send(result);
     });
 
-    //add job data deleted
+    //my job data update
+
+    app.put("/addjob/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedJob = req.body;
+      const job = {
+        $set: {
+          name: updatedJob.name,
+          datepic: updatedJob.datepic,
+          jobtitle: updatedJob.jobtitle,
+          jobcategory: updatedJob.jobcategory,
+          salary: updatedJob.salary,
+          photo: updatedJob.photo,
+          description: updatedJob.description,
+          applicationDeadline: updatedJob.applicationDeadline,
+        },
+      };
+      const result = await JobCollection.updateOne(filter, job, options);
+
+      res.send(result);
+    });
+
+    //my job data deleted
     app.delete("/addjob/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
