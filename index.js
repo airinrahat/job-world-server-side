@@ -29,7 +29,14 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    const JobCollection = client.db("jobWorldDB").collection("jobWorld");
+    const JobCollection = client.db("jobWorldDB").collection("addjob");
+
+    app.get("/addjob", async (req, res) => {
+      const cursor = JobCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.post("/addjob", async (req, res) => {
       const newaddJob = req.body;
 
