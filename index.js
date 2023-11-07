@@ -47,11 +47,6 @@ async function run() {
       res.send(result);
     });
     //my job data get emaill
-    app.get("/addjob", async (req, res) => {
-      console.log(req.query);
-      const result = await JobCollection.insertOne();
-      res.send(result);
-    });
 
     //my job data post
     app.post("/addjob", async (req, res) => {
