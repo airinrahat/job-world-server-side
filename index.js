@@ -46,6 +46,12 @@ async function run() {
       const result = await JobCollection.findOne(query);
       res.send(result);
     });
+    //my job data get emaill
+    app.get("/addjob", async (req, res) => {
+      console.log(req.query);
+      const result = await JobCollection.insertOne();
+      res.send(result);
+    });
 
     //my job data post
     app.post("/addjob", async (req, res) => {
@@ -86,6 +92,15 @@ async function run() {
       const result = await JobCollection.deleteOne(query);
       res.send(result);
     });
+
+    //add a all job
+
+    app.get("/addjob", async (req, res) => {
+      const cursor = JobCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    //
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
