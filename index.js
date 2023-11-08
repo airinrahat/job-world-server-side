@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
@@ -8,12 +8,17 @@ const port = process.env.PORT || 5000;
 
 // middleware
 
-app.use(
-  cors({
-    origin: ["http://localhost:5173"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       // "http://localhost:5173",
+//       "https://job-world-a014d.web.app",
+//       "https://job-world-a014d.firebaseapp.com",
+//     ],
+//     credentials: true,
+//   })
+// );
+app.use(cors());
 app.use(express.json());
 
 console.log(process.env.DB_PASS);
@@ -59,27 +64,27 @@ async function run() {
       .collection("appliedjob");
 
     // jwt
-    app.post("/jwt", async (req, res) => {
-      const user = req.body;
-      console.log("user for token", user);
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "1h",
-      });
+    // app.post("/jwt", async (req, res) => {
+    //   const user = req.body;
+    //   console.log("user for token", user);
+    //   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+    //     expiresIn: "1h",
+    //   });
 
-      res
-        .cookie("token", token, {
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-        })
-        .send({ success: true });
-    });
+    //   res
+    //     .cookie("token", token, {
+    //       httpOnly: true,
+    //       secure: true,
+    //       sameSite: "none",
+    //     })
+    //     .send({ success: true });
+    // });
 
-    app.post("/logout", async (req, res) => {
-      const user = req.body;
-      console.log("logging out", user);
-      res.clearCookie("token", { maxAge: 0 }).send({ success: true });
-    });
+    // app.post("/logout", async (req, res) => {
+    //   const user = req.body;
+    //   console.log("logging out", user);
+    //   res.clearCookie("token", { maxAge: 0 }).send({ success: true });
+    // });
 
     //my job data get
     app.get("/addjob", async (req, res) => {
